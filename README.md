@@ -1,4 +1,4 @@
-## Nome do Projeto: BlackJack/21
+## Nome do Projeto: FlappyBird
 
 #### Status: em desenvolvimento
 

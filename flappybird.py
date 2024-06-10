@@ -34,10 +34,45 @@ class Bird:
         self.time = 0
         self.image_count = 0
         self.image = IMGS[0]
+ #cima = -y  baixa = +y  esquerda =-x  direita = +x
+    
+    def jump(self):
+        self.velocity = -10.5
+        self.time = 0
+        self.height = self.y
+    
+    def move(self):
+        #calcular deslocamento 
         
+
+        self.time += 1
+        displacement = self.velocity * self.time + 1.5 * self.time ** 2 # 1.5 * (self.time ** 2) + self.velocity * self.time
+
+           
+        # restringir o deslocamento
+        if displacement >= 16:
+            displacement = 16
+        elif displacement < 0: #testar sem depois , torna o jogo mais facil e dinamico
+            displacement -= 2
+        self.y = self.y + displacement
+        
+        # angulo do passaro   
+        if displacement < 0 or self.y < (self.height + 50): #testar sem parenteses #posição para inclinação da animação do passaro
+            if self.tilt < self.MAX_ROTATION:
+                self.tilt = self.MAX_ROTATION
+        else:
+            if self.tilt > -90: #rotacionado para baixo, queda
+                self.tilt -= self.MAX_ROTATION
+                
+                # ----
+        # self.image_count += 1
+        # if self.image_count < self.TIME_ANIMATION:
+        #     self.image = self.IMGS[0]
+        # elif self.image_count < self.TIME_ANIMATION * 2:
+        #     self.image = self.IMGS[1]
         
 class Pipe:
     pass
-
+    
 class floor:
     pass

@@ -18,8 +18,24 @@ pygame.font.init()
 POINTS_FONTS = pygame.font.SysFont('robot',50)
 
 class Bird:
-    pass
-
+    IMGS = BIRDS
+    # animação da rotação do passaro 
+    MAX_ROTATION = 25 
+    MAX_SPEED = 20
+    TIME_ANIMATION = 5
+    
+    def __init__(self,x,y):
+        #  
+        self.x = x
+        self.y = y
+        self.tilt = 0
+        self.velocity = 0
+        self.height = self.y
+        self.time = 0
+        self.image_count = 0
+        self.image = IMGS[0]
+        
+        
 class Pipe:
     pass
 

@@ -41,6 +41,8 @@ Se você quiser contribuir para este projeto, siga estas etapas:
 
 ### Créditos
 
+-
+
 **Desenvolvimento:**
 
 - Vanessa Carraro

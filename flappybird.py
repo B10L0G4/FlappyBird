@@ -33,7 +33,7 @@ class Bird:
         self.height = self.y
         self.time = 0
         self.image_count = 0
-        self.image = IMGS[0]
+        self.image = self.IMGS[0]
  #cima = -y  baixa = +y  esquerda =-x  direita = +x
     
     def jump(self):
@@ -70,6 +70,40 @@ class Bird:
         #     self.image = self.IMGS[0]
         # elif self.image_count < self.TIME_ANIMATION * 2:
         #     self.image = self.IMGS[1]
+        def drawing(self,screen):
+            #definir imagem 
+            self.image_count += 1
+            if self.image_count < self.TIME_ANIMATION:
+                self.image = self.IMGS[0]
+            elif self.image_count < self.TIME_ANIMATION * 2:
+                self.image = self.IMGS[1]
+            elif self.image_count < self.TIME_ANIMATION * 3:
+                self.image = self.IMGS[2]
+            elif self.image_count < self.TIME_ANIMATION * 4:
+                self.image = self.IMGS[1]
+            elif self.image_count >= self.TIME_ANIMATION * 4 + 1:
+                self.image = self.IMGS[0]
+                self.image_count = 0
+        
+            # quando cair, para de bater asa 
+            
+            if self.tilt <= -80:
+                self.image = self.IMGS[1]
+                self.image_count = self.TIME_ANIMATION * 2
+            
+            #desenhae a imahgem
+            
+            image_rotate = pygame.transform.rotate(self.image, self.tilt)
+            post_image_center= self.image.get_rect(topleft=(self.x,self.y)).center
+            rectangle = pygame.Rect(center=post_image_center)
+            screem.blit(image_rotate,rectangle.topleft)
+            
+        def gat_mask(self):
+            pygame.mask.from_surface(self.image)
+        
+            
+                                                   
+            
         
 class Pipe:
     pass

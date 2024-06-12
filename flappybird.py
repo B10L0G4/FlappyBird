@@ -99,14 +99,26 @@ class Bird:
         screen.blit(image_rotate,rectangle.topleft)
         
     def gat_mask(self):
-        pygame.mask.from_surface(self.image)
-        
-            
-                                                   
-            
+        pygame.mask.from_surface(self.image)      
         
 class Pipe:
-    pass
+    DISTANCE = 200
+    VELOCITY = 5 
     
+    def __init__(self,x):
+        self.x = x
+        self.height = 0 #random.randrange(50,450)
+        self.top = 0 #self.height - PIPE_IMAGE.get_height()
+        self.bottom = 0 #self.height + PIPE_IMAGE.get_height()
+        self.PIPE_TOP = pygame.transform.flip(PIPE_IMAGE,False,True)
+        self.PIPE_BOTTOM = PIPE_IMAGE
+        self.PIPE_pass = False
+        self.define_height()
+    def define_height(self):
+        self.height = random.randrange(50,450)
+        self.top = self.height - self.PIPE_TOP.get_height()
+        self.bottom = self.height + self.DISTANCE.get_height()
+        
+        
 class floor:
     pass

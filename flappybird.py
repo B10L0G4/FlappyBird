@@ -119,6 +119,29 @@ class Pipe:
         self.top = self.height - self.PIPE_TOP.get_height()
         self.bottom = self.height + self.DISTANCE.get_height()
         
+    def movePipe(self):
+        self.x -= self.VELOCITY
+    def drawPipe(self, screen):
+        screen.blit(self.PIPE_TOP, (self.x, self.top))
+        screen.blit(self.PIPE_BOTTOM, (self.x, self.bottom))
+        
+    def collide(self,bird):
+        bird_mask = bird.gat_mask()
+        top_mask = pygame.mask.from_surface(self.PIPE_TOP)
+        bottom_mask = pygame.mask.from_surface(self.PIPE_BOTTOM)
+        
+        top_offset = (self.x - bird.x, self.top - round(bird.y))
+        bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
+        
+        top_point = bird_mask.overlap(top_mask,top_offset)
+        base_point = bird_mask.overlap(bottom_mask,bottom_offset)
+        
+        if top_point or base_point:
+            return True
+        else:
+            return False
+        
+        
         
 class floor:
     pass

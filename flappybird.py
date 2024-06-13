@@ -70,43 +70,78 @@ class Bird:
         #     self.image = self.IMGS[0]
         # elif self.image_count < self.TIME_ANIMATION * 2:
         #     self.image = self.IMGS[1]
-        def drawing(self,screen):
-            #definir imagem 
-            self.image_count += 1
-            if self.image_count < self.TIME_ANIMATION:
-                self.image = self.IMGS[0]
-            elif self.image_count < self.TIME_ANIMATION * 2:
-                self.image = self.IMGS[1]
-            elif self.image_count < self.TIME_ANIMATION * 3:
-                self.image = self.IMGS[2]
-            elif self.image_count < self.TIME_ANIMATION * 4:
-                self.image = self.IMGS[1]
-            elif self.image_count >= self.TIME_ANIMATION * 4 + 1:
-                self.image = self.IMGS[0]
-                self.image_count = 0
+    def drawing(self,screen):
+        #definir imagem 
+        self.image_count += 1
+        if self.image_count < self.TIME_ANIMATION:
+            self.image = self.IMGS[0]
+        elif self.image_count < self.TIME_ANIMATION * 2:
+            self.image = self.IMGS[1]
+        elif self.image_count < self.TIME_ANIMATION * 3:
+            self.image = self.IMGS[2]
+        elif self.image_count < self.TIME_ANIMATION * 4:
+            self.image = self.IMGS[1]
+        elif self.image_count >= self.TIME_ANIMATION * 4 + 1:
+            self.image = self.IMGS[0]
+            self.image_count = 0
+    
+        # quando cair, para de bater asa 
         
-            # quando cair, para de bater asa 
-            
-            if self.tilt <= -80:
-                self.image = self.IMGS[1]
-                self.image_count = self.TIME_ANIMATION * 2
-            
-            #desenhae a imahgem
-            
-            image_rotate = pygame.transform.rotate(self.image, self.tilt)
-            post_image_center= self.image.get_rect(topleft=(self.x,self.y)).center
-            rectangle = pygame.Rect(center=post_image_center)
-            screem.blit(image_rotate,rectangle.topleft)
-            
-        def gat_mask(self):
-            pygame.mask.from_surface(self.image)
+        if self.tilt <= -80:
+            self.image = self.IMGS[1]
+            self.image_count = self.TIME_ANIMATION * 2
         
-            
-                                                   
-            
+        #desenhae a imahgem
+        
+        image_rotate = pygame.transform.rotate(self.image, self.tilt)
+        post_image_center= self.image.get_rect(topleft=(self.x,self.y)).center
+        rectangle = pygame.Rect(center=post_image_center)
+        screen.blit(image_rotate,rectangle.topleft)
+        
+    def gat_mask(self):
+        pygame.mask.from_surface(self.image)      
         
 class Pipe:
-    pass
+    DISTANCE = 200
+    VELOCITY = 5 
     
+    def __init__(self,x):
+        self.x = x
+        self.height = 0 #random.randrange(50,450)
+        self.top = 0 #self.height - PIPE_IMAGE.get_height()
+        self.bottom = 0 #self.height + PIPE_IMAGE.get_height()
+        self.PIPE_TOP = pygame.transform.flip(PIPE_IMAGE,False,True)
+        self.PIPE_BOTTOM = PIPE_IMAGE
+        self.PIPE_pass = False
+        self.define_height()
+    def define_height(self):
+        self.height = random.randrange(50,450)
+        self.top = self.height - self.PIPE_TOP.get_height()
+        self.bottom = self.height + self.DISTANCE.get_height()
+        
+    def movePipe(self):
+        self.x -= self.VELOCITY
+    def drawPipe(self, screen):
+        screen.blit(self.PIPE_TOP, (self.x, self.top))
+        screen.blit(self.PIPE_BOTTOM, (self.x, self.bottom))
+        
+    def collide(self,bird):
+        bird_mask = bird.gat_mask()
+        top_mask = pygame.mask.from_surface(self.PIPE_TOP)
+        bottom_mask = pygame.mask.from_surface(self.PIPE_BOTTOM)
+        
+        top_offset = (self.x - bird.x, self.top - round(bird.y))
+        bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
+        
+        top_point = bird_mask.overlap(top_mask,top_offset)
+        base_point = bird_mask.overlap(bottom_mask,bottom_offset)
+        
+        if top_point or base_point:
+            return True
+        else:
+            return False
+        
+        
+        
 class floor:
     pass

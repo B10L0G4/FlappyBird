@@ -142,6 +142,25 @@ class Pipe:
             return False
         
         
-        
 class floor:
-    pass
+    VELOCITY = 50
+    WIDTH_SCREEN = FLOOR_IMAGE.get_width()
+    IMAGE = FLOOR_IMAGE
+    
+    def __init__(self,y):
+        self.y = y
+        self.x1 = 0
+        self.x2 = self.WIDTH_SCREEN
+    
+    def move_to(self):
+        self.x1 -= self.VELOCITY
+        self.x2 -= self.VELOCITY
+        
+        if self.x1 + self.WIDTH_SCREEN < 0:
+            self.x1 = self.x1 + self.WIDTH_SCREEN
+        if self.x2 + self.WIDTH_SCREEN < 0:
+            self.x2 = self.x2 + self.WIDTH_SCREEN
+            
+    def draw_floor(self, screen):
+        screen.blit(self.IMAGE, (self.x1, self.y))
+        screen.blit(self.IMAGE, (self.x2, self.y))

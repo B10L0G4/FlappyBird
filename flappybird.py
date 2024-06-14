@@ -172,7 +172,7 @@ def draw_screen(screen, bird,pipe, floor, points):
         birds.drawing(screen)
     for pipes in pipe:
         pipes.drawPipe(screen)
-    text = FONT_POINTS.render(f'Point {points}',1, (255,255,255))
+    text = POINTS_FONTS.render(f'Point {points}',1, (255,255,255))
     screen.blit(text, (WIDTH_SCREEN -10 -text.get_width(),10))
     floor.draw(screen)
     pygame.display.update()

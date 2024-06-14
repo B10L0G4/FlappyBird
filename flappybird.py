@@ -164,3 +164,21 @@ class floor:
     def draw_floor(self, screen):
         screen.blit(self.IMAGE, (self.x1, self.y))
         screen.blit(self.IMAGE, (self.x2, self.y))
+        
+def draw_screen(screen, bird,pipe, floor, points):
+    screen.blit(BACKGROUD,(0,0))
+    for birds in bird:
+        birds.move()
+        birds.drawing(screen)
+    for pipes in pipe:
+        pipes.drawPipe(screen)
+    text = FONT_POINTS.render(f'Point {points}',1, (255,255,255))
+    screen.blit(text, (WIDTH_SCREEN -10 -text.get_width(),10))
+    floor.draw(screen)
+    pygame.display.update()
+    
+    
+    
+    
+    
+    

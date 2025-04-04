@@ -21,10 +21,13 @@ pygame.font.init()
 POINTS_FONTS = pygame.font.SysFont('robot', 50)
 
 class Bird: # classe do passaro 
+    '''
+    Função para criar o passaro, definir a imagem ,velocidade e a animação 
+    '''
     IMGS = BIRDS_IMAGE
     # # animação da rotação do passaro 
     MAX_ROTATION = 25 
-    MAX_SPEED = 0 # valor padrao 20 
+    MAX_SPEED = 20 # valor padrao 20 
     TIME_ANIMATION = 5 # valor padrao 5 
     
     def __init__(self, x, y):
@@ -38,49 +41,50 @@ class Bird: # classe do passaro
         self.image = self.IMGS[0]
     
     def jump(self):
-        self.velocity = 0 # velocidade padrão -10.
+        self.velocity = -10.5 # velocidade padrão -10.5
         self.time = 0
         self.height = self.y
     
     def move(self):
         # calcular o deslocamento 
         self.time += 1 # faz com que o tempo aumente
-        displacement = 1.5 * (self.time**2) + self.velocity * self.time #deslocamento #desloacamento do passaro em relação ao tempo
-
+        displacement = 1.5 * (self.time**2) + self.velocity * self.time # desloacamento do passaro em relação ao tempo
+        #print('Deslocamento calculo',displacement)
         #restringir o deslocamento 
-        if displacement > 5: # padra 16
-            displacement = 100 #padrao 16
-        # elif displacement < 0: # padrao -10
-        #     displacement -= 4 # padrao -10
+        if displacement > 16: # padra 16
+            displacement = 14 #padrao 16
+        elif displacement < -10: # padrao -10
+            displacement -= -10 # padrao -10
         self.y += displacement
         
         #angulo do passaro 
-        # if displacement < 0 or self.y < (self.y + 50):
-        #     if self.tilt < self.MAX_ROTATION:
-        #         self.tilt = self.MAX_ROTATION
-        # else:
-        #     if self.tilt > -90:
-        #         self.tilt -= self.MAX_ROTATION
+        if displacement < 0 or self.y < (self.y + 50):
+            if self.tilt < self.MAX_ROTATION:
+                self.tilt = self.MAX_ROTATION
+        else:
+            if self.tilt > -90:
+                self.tilt -= self.MAX_ROTATION
     
     def drawing(self, screen):
     #     #definir qual imagem o passaro vai usar 
         self.image_count += 1
-        
+       
         if self.image_count < self.TIME_ANIMATION:
             self.image = self.IMGS[0]
-        elif self.image_count < self.TIME_ANIMATION* 2:
+        elif self.image_count < self.TIME_ANIMATION * 2:
             self.image = self.IMGS[1]
-        elif self.image_count < self.TIME_ANIMATION* 3:
+        elif self.image_count < self.TIME_ANIMATION * 3:
             self.image = self.IMGS[2]
-        elif self.image_count < self.TIME_ANIMATION* 4:
+        elif self.image_count < self.TIME_ANIMATION * 4:
             self.image = self.IMGS[1]
-        elif self.image_count >= self.TIME_ANIMATION* 4 + 1:
+        elif self.image_count >= self.TIME_ANIMATION * 4 + 1:
             self.image = self.IMGS[0]
             self.image_count = 0
     #      # se o passaro tiver caindo eu não vou bater asa
+    
         if self.tilt <= -80:
             self.image = self.IMGS[1]
-            self.image_count = self.TIME_ANIMATION* 2
+            self.image_count = self.TIME_ANIMATION * 2
 
     #     #desenhando a imagem 
         image_rotate = pygame.transform.rotate(self.image, self.tilt)
@@ -112,7 +116,7 @@ class Pipe:
     
     def drawPipe(self, screen):
         screen.blit(self.PIPE_TOP, (self.x, self.top))
-        print(f"Pipe top position: ({self.x}, {self.top})")
+        #print(f"Pipe top position: ({self.x}, {self.top})")
         screen.blit(self.PIPE_BOTTOM, (self.x, self.bottom))
     
     def define_height(self): # define a altura do cano
@@ -208,7 +212,8 @@ def main():
     função de inicialização do jogo
     '''
     screen = pygame.display.set_mode((WIDTH_SCREEN, HEIGHT_SCREEN)) # define o tamanho da tela
-    bird = [Bird(120, 100)]
+    bird = [Bird(230, 350)] # define a posição do passaro na tela 
+    pygame.display.set_caption('Flappy Bird') # define o nome do jogo na tela
     floor = Floor(730) # define a altura do chão , 730 é a altura do chão
     pipe = [Pipe(300)] # define a posição do cano na tela (padrao 700)
     points = 0
@@ -249,14 +254,14 @@ def main():
         # if add_pipe:
         #     points += 1
         #     pipe.append(Pipe(600))
-        #     bird.append(Bird(230, 350))
+        #     bird.append(Bird(230, 350)) # provavelmente ira duplicar os passaros , verificar mais a frente 
 
         # for pipes in remove_pipe:
         #     pipe.remove(pipes)
         
-        bird.append(Bird(230, 350)) # teste debug 
-        pipe.append(Pipe(600)) # teste debug 
-        points += 1 # teste debug 
+        #bird.append(Bird(230, 350)) # teste debug 
+        pipe.append(Pipe(500)) # teste debug 
+        #points += 1 # teste debug 
         floor.move_to() # teste debug  
         
         draw_screen(screen, floor, points, pipe, bird) 
